@@ -1,7 +1,3 @@
-// Your apiRoutes.js file should contain two routes:
-    // A GET route with the url /api/friends. This will be used to display a JSON of all possible friends.
-    // A POST routes /api/friends. This will be used to handle incoming survey results. This route will also be used to handle the compatibility logic.
-
 // ===============================================================================
 // LOAD DATA
 // We are linking our routes to a series of "data" sources.
@@ -9,6 +5,9 @@
 // ===============================================================================
 
 var friendsData = require("../app/data/friends");
+
+//Try to grab userData from survey.HTML
+// var userData = require("../public/survey");
 
 // ===============================================================================
 // ROUTING
@@ -24,7 +23,7 @@ module.exports = function (app) {
     app.get("/api/friends", function (req, res) {
         res.json(friendsData);
         //console.log(friendsData);
-      
+
     });
 
     // API POST Requests
@@ -42,29 +41,32 @@ module.exports = function (app) {
         // It will do this by sending out the value "true" have a table
         // req.body is available since we're using the body parsing middleware
 
-        // Grab array from front end survey (create empty array and then push to it)
-        // Function to loop though the array of 2 objects from the friends array
-        // Do the diff math to the current user
-        // Compare the 2 differences and the smallest differnce is the display match
+    //     res.json(true);
+    //     console.log("userResponses", JSON.stringify(userData));
+
+    //     var matchName = "";
+    //     var matchPic = "";
+    //     var totalDiff = 100;
+
+    //     //Loop through friends list
+    //     for (let i = 0; i < friendsListArr.length; i++) {
+    //         diff + -Math.abs(friendsListArr[i]).scores[i] - userData[i].scores[i];
+    //         console.log(diff)
+    //     }
+
+    //     if (diff < totalDiff) {
+    //         totalDiff = diff;
+    //         matchName = friendsListArr[i].name;
+    //         matchPic = friendsListArr[i].photo;
+    //     }
 
 
-
-
-
-
-
-        // if (friendsData.length < 5) {
-        //     friendsData.push(req.body);
-        //     res.json(true);
-        // } else {
-        //     waitListData.push(req.body);
-        //     res.json(false);
-        // }
-    
     });
 
-    // ---------------------------------------------------------------------------
-    // I added this below code so you could clear out the table while working with the functionality.
-    // Don"t worry about it!
+    // //Push userdata to Friends Array
+    // friendsListArr.push(userData);
+
+    // //Send JSON response
+    // res.json({ status: 200, matchName: matchName, matchPic: matchPic })
 
 };
