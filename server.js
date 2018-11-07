@@ -1,43 +1,40 @@
-// Dependencies
-// =============================================================
-var express = require("express");
-var path = require("path");
+// ==============================================================================
+// DEPENDENCIES
+// Series of npm packages that we will use to give our server useful functionality
+// ==============================================================================
 
-// Sets up the Express App
-// =============================================================
+var express = require("express");
+
+// ==============================================================================
+// EXPRESS CONFIGURATION
+// This sets up the basic properties for our express server
+// ==============================================================================
+
+// Tells node that we are creating an "express" server
+// express() calls the express function and gives us an application instance that we save to our app variable
 var app = express();
-var PORT = process.env.PORT || 3000;
+
+// Sets an initial port. We"ll use this later in our listener
+var PORT = process.env.PORT || 8080;
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Star Wars Characters (DATA)
-// =============================================================
-var friends = [
+// ================================================================================
+// ROUTER
+// The below points our server to a series of "route" files.
+// These routes give our server a "map" of how to respond when users visit or request data from various URLs.
+// ================================================================================
 
-];
+require("./routing/apiRoutes")(app);
+require("./routing/htmlRoutes")(app);
 
-// Routes
-// =============================================================
+// =============================================================================
+// LISTENER
+// The below code effectively "starts" our server
+// =============================================================================
 
-// Basic route that sends the user first to the AJAX Page
-app.get("/survey", function(req, res) {
-  res.sendFile(path.join(__dirname, "survey.html"));
-});
-
-app.get("/home", function(req, res) {
-  res.sendFile(path.join(__dirname, "home.html"));
-});
-
-// Displays all characters
-app.get("/api/friends", function(req, res) {
-  return res.json(characters);
-});
-
-
-// Starts the server to begin listening
-// =============================================================
 app.listen(PORT, function() {
-  console.log("App listening on PORT " + PORT);
+  console.log("App listening on PORT: " + PORT);
 });
