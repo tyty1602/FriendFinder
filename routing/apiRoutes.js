@@ -5,9 +5,8 @@
 // ===============================================================================
 
 var friendsData = require("../app/data/friends");
-
-//Try to grab userData from survey.HTML
-// var userData = require("../public/survey");
+// var path = require("path");
+// var fs = require("fs");
 
 // ===============================================================================
 // ROUTING
@@ -22,7 +21,7 @@ module.exports = function (app) {
 
     app.get("/api/friends", function (req, res) {
         res.json(friendsData);
-        //console.log(friendsData);
+        console.log(friendsData);
 
     });
 
@@ -37,36 +36,47 @@ module.exports = function (app) {
 
     //Add code here for matching friends list? 
     app.post("/api/friends", function (req, res) {
-        // Note the code here. Our "server" will respond to requests and let users know if they have a table or not.
-        // It will do this by sending out the value "true" have a table
+        console.log(req.body);
         // req.body is available since we're using the body parsing middleware
 
-    //     res.json(true);
-    //     console.log("userResponses", JSON.stringify(userData));
 
-    //     var matchName = "";
-    //     var matchPic = "";
-    //     var totalDiff = 100;
+        var newFriendScores = req.body.scores;
+        var scoreArray = [];
+        var friendCount = 0;
+        var bestMatch = 0;
 
-    //     //Loop through friends list
-    //     for (let i = 0; i < friendsListArr.length; i++) {
-    //         diff + -Math.abs(friendsListArr[i]).scores[i] - userData[i].scores[i];
-    //         console.log(diff)
-    //     }
+        //Loop through friends list
+        for (let i = 0; i < friendsData.length; i++) {
+            var scoresDiff = 0;
+            //now 2nd loop to parse Int scores to compare friends
+            for (let j = 0; j < newFriendScores.length; j++) {
+                scoresDiff += (Math.abs(parseInt(friendsData[i].scores[j]) - parseInt(newFriendScores[j])));
 
-    //     if (diff < totalDiff) {
-    //         totalDiff = diff;
-    //         matchName = friendsListArr[i].name;
-    //         matchPic = friendsListArr[i].photo;
-    //     }
+            }
+            //Push results into ScoreArray
+            scoreArray.push(scoresDiff);
+            console.log("Score array is here", scoreArray)
 
+        }
+
+        //After all friends are compared, now let's find the best match
+
+        for (let a = 0; a < scoreArray.length; a++) {
+            if (scoreArray[a] <= scoreArray[bestMatch]) {
+                bestMatch = a;
+            }
+
+        }
+
+        //return bestmatch data
+        var bff = friendsData[bestMatch];
+        res.json(bff);
+
+        // //Push the new user submission to Friends.js
+        friendsData.push(req.body);
 
     });
 
-    // //Push userdata to Friends Array
-    // friendsListArr.push(userData);
 
-    // //Send JSON response
-    // res.json({ status: 200, matchName: matchName, matchPic: matchPic })
 
 };
