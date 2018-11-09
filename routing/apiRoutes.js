@@ -36,13 +36,12 @@ module.exports = function (app) {
 
     //Add code here for matching friends list? 
     app.post("/api/friends", function (req, res) {
-        console.log(req.body);
+        //console.log(req.body);
         // req.body is available since we're using the body parsing middleware
 
 
         var newFriendScores = req.body.scores;
         var scoreArray = [];
-        var friendCount = 0;
         var bestMatch = 0;
 
         //Loop through friends list
@@ -60,17 +59,17 @@ module.exports = function (app) {
         }
 
         //After all friends are compared, now let's find the best match
-
         for (let a = 0; a < scoreArray.length; a++) {
             if (scoreArray[a] <= scoreArray[bestMatch]) {
+                //if score is negative, then just set best match score to 0
                 bestMatch = a;
             }
 
         }
-
         //return bestmatch data
         var bff = friendsData[bestMatch];
         res.json(bff);
+        console.log("what is a bff here", bff)
 
         // //Push the new user submission to Friends.js
         friendsData.push(req.body);
